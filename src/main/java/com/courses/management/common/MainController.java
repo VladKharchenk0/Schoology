@@ -1,7 +1,5 @@
 package com.courses.management.common;
 
-import com.courses.management.course.CourseService;
-
 public class MainController {
     private View view;
 
@@ -24,7 +22,6 @@ public class MainController {
                 break;
             }
             case "create_course": {
-                createCourse();
                 break;
             }
             default: {
@@ -34,8 +31,4 @@ public class MainController {
         }
     }
 
-    private void createCourse() {
-        CourseService service = new CourseService(view);
-        service.createCourse();
-    }
 }
