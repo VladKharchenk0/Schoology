@@ -13,7 +13,7 @@ public class DatabaseConnector {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl("jdbc:postgresql://localhost:5432/course_management");
         config.setUsername("postgres");
-        config.setPassword("admin");
+        config.setPassword("1111");
         ds = new HikariDataSource(config);
         ds.setMaximumPoolSize(10);
     }
