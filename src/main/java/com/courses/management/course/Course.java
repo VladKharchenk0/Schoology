@@ -55,4 +55,12 @@ public class Course extends BaseEntity {
     public void setHomework(List<Homework> homework) {
         this.homework = homework;
     }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "title='" + title + '\'' +
+                ", courseStatus=" + courseStatus +
+                '}';
+    }
 }

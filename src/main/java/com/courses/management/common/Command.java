@@ -1,5 +1,7 @@
 package com.courses.management.common;
 
+import java.sql.SQLException;
+
 public interface Command {
     String command();
 

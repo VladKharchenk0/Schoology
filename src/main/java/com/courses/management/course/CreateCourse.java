@@ -8,14 +8,17 @@ public class CreateCourse implements Command {
 
     private final View view;
     private DataAccessObject<Course> courseDAO;
+
     public CreateCourse(View view) {
         this.view = view;
         courseDAO = new CourseDAOImpl();
     }
+
     @Override
     public String command() {
         return "create_course";
     }
+
     @Override
     public void process() {
         view.write("Enter a course title");
@@ -24,8 +27,9 @@ public class CreateCourse implements Command {
         course.setTitle(title);
         course.setCourseStatus(CourseStatus.NOT_STARTED);
         courseDAO.create(course);
-        view.write("Course created with title -> %s"+ title);
+        view.write("Course created with title -> %s" + title);
     }
+
     private String validate(String value) {
         while (value.trim().isEmpty()) {
             view.write("Please enter the correct title");
