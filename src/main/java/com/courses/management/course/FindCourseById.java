@@ -6,13 +6,13 @@ import com.courses.management.common.View;
 
 import java.sql.SQLException;
 
-public class FindCourseId implements Command {
+public class FindCourseById implements Command {
 
     private final View view;
     private DataAccessObject<Course> courseDAO;
 
 
-    public FindCourseId(View view) {
+    public FindCourseById(View view) {
         this.view = view;
         courseDAO = new CourseDAOImpl();
     }
