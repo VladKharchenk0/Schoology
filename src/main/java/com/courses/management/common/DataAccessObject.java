@@ -1,8 +1,14 @@
 package com.courses.management.common;
 
 
+import java.util.List;
 
-public abstract class DataAccessObject<T extends BaseEntity> {
+public interface DataAccessObject<T extends BaseEntity> {
 
-    public abstract void create(T t);
+    void create(T t);
+    void update(T t);
+    void delete(int id);
+    T get(int id);
+    List<T> getAll();
+
 }
