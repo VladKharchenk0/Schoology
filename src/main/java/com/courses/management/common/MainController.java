@@ -1,10 +1,11 @@
 package com.courses.management.common;
 
+import com.courses.management.common.commands.Exit;
+import com.courses.management.common.commands.Help;
 import com.courses.management.course.CreateCourse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,7 +20,9 @@ public class MainController {
 
 
         this.view = view;
-        commands = Arrays.asList(new CreateCourse(view), new Help(view));
+        commands = Arrays.asList(new CreateCourse(view),
+                new Help(view),
+                new Exit(view));
     }
 
     public void read() {
@@ -39,8 +42,6 @@ public class MainController {
                 break;
             }
         }
-
-        view.write("Enter a command or use help to list all available commands");
     }
 
 }
