@@ -7,9 +7,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DatabaseConnector {
-    private final HikariDataSource ds;
+    private static final HikariDataSource ds;
 
-    public DatabaseConnector() {
+    private DatabaseConnector() {
+        throw new RuntimeException("This operation is not supported");
+    }
+
+    static {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl("jdbc:postgresql://localhost:5432/course_management");
         config.setUsername("postgres");
@@ -18,11 +22,8 @@ public class DatabaseConnector {
         ds.setMaximumPoolSize(10);
     }
 
-    public Connection getConnection() {
-        try {
-            return ds.getConnection();
-        } catch (SQLException e) {
-            throw new RuntimeException("Cannot connect to Connection Pool ", e);
-        }
+    public static HikariDataSource getConnector() {
+
+        return ds;
     }
 }

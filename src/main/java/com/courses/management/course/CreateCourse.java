@@ -11,8 +11,7 @@ public class CreateCourse implements Command {
     private DataAccessObject<Course> courseDAO;
     public CreateCourse(View view) {
         this.view = view;
-        DatabaseConnector connector = new DatabaseConnector();
-        courseDAO = new CourseDAO(connector.getConnection());
+        courseDAO = new CourseDAO();
     }
     @Override
     public String command() {
