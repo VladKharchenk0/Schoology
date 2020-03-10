@@ -2,7 +2,6 @@ package com.courses.management.course;
 
 import com.courses.management.common.Command;
 import com.courses.management.common.DataAccessObject;
-import com.courses.management.common.DatabaseConnector;
 import com.courses.management.common.View;
 
 public class CreateCourse implements Command {
@@ -11,7 +10,7 @@ public class CreateCourse implements Command {
     private DataAccessObject<Course> courseDAO;
     public CreateCourse(View view) {
         this.view = view;
-        courseDAO = new CourseDAO();
+        courseDAO = new CourseDAOImpl();
     }
     @Override
     public String command() {
