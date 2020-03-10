@@ -2,12 +2,30 @@ package com.courses.management.solution;
 
 import com.courses.management.common.BaseEntity;
 import com.courses.management.homework.Homework;
+import com.courses.management.user.User;
 
 public class Solution extends BaseEntity {
     private String text;
     private SolutionStatus status;
     private int mark;
     private Homework homeWork;
+    private User user;
+
+    public Homework getHomeWork() {
+        return homeWork;
+    }
+
+    public void setHomeWork(Homework homeWork) {
+        this.homeWork = homeWork;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public String getText() {
         return text;
