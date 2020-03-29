@@ -1,10 +1,9 @@
 package com.courses.management.homework;
 
-import com.courses.management.common.DataAccessObject;
 
 import java.util.List;
 
-public class HomeWorkDAOImpl implements DataAccessObject<Homework>, HomeWorkDAO {
+public class HomeWorkDAOImpl implements  HomeWorkDAO {
     @Override
     public void create(Homework homework) {
 

@@ -3,6 +3,7 @@ package com.courses.management.common;
 import com.courses.management.common.commands.Exit;
 import com.courses.management.common.commands.Help;
 import com.courses.management.course.CreateCourse;
+import com.courses.management.course.FIndCourseByTitle;
 import com.courses.management.course.FindCourseById;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +25,8 @@ public class MainController {
         commands = Arrays.asList(new CreateCourse(view),
                 new Help(view),
                 new Exit(view),
-                new FindCourseById(view));
+                new FindCourseById(view),
+                new FIndCourseByTitle(view));
     }
 
     public void read() {

@@ -21,6 +21,8 @@ public class CourseDAOImpl implements CourseDAO {
 
     private final static String GET = "SELECT * FROM course WHERE id = ?;";
 
+    private final static String GETBYTITLE = "SELECT * FROM course WHERE title = ?;";
+
     private HikariDataSource dataSource = DatabaseConnector.getConnector();
 
     @Override
@@ -75,6 +77,23 @@ public class CourseDAOImpl implements CourseDAO {
 
     @Override
     public Course get(String title) {
-        return null;
+        ResultSet resultSet = null;
+        Course course = new Course();
+
+        try (PreparedStatement statement = dataSource.getConnection().prepareStatement(GETBYTITLE)) {
+            statement.setString(1, title);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                course.setTitle(title);
+                course.setId(resultSet.getInt("id"));
+                String s = resultSet.getString("status");
+                course.setCourseStatus(CourseStatus.valueOf(s));
+
+            }
+        } catch (SQLException e) {
+        }
+
+        return course;
     }
 }
