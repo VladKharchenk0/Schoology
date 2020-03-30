@@ -2,8 +2,6 @@ package com.courses.management.common;
 
 import com.courses.management.common.commands.util.InputString;
 
-import java.sql.SQLException;
-
 public interface Command {
     int COMMAND_NAME_INDEX =0;
     String command();
