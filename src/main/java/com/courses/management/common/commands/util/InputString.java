@@ -5,31 +5,32 @@ import org.apache.logging.log4j.Logger;
 
 public class InputString {
     private static final Logger LOGGER = LogManager.getLogger(InputString.class);
-    private String command;
+    private String input;
 
-    public InputString(String command) {
-        this.command = command;
+    public InputString(String input) {
+        this.input = input;
     }
 
-    public void validateParameters(String inputString){
-        int formatLength= getParameterSize(inputString);
-        if(formatLength!=getLength()){
-            LOGGER.error(String.format("\"Invalid number of parameters separated by |, expected %s, but was %s",
-                    getLength(), formatLength));
-            throw new IllegalArgumentException("Invalid number of parameters separated by |");
+    public void validateParameters(String command) {
+        int commandLength = getParametersSize(command);
+        int inputLength = getLength();
+        if (commandLength != inputLength) {
+            String message = String.format("Invalid number of parameters separated by |, expected %s, but was %s"
+                    , commandLength, inputLength);
+            LOGGER.error(message);
+            throw new IllegalArgumentException(message);
         }
-
     }
 
-    public int getLength(){
-        return getParameterSize(command);
+    public int getLength() {
+        return getParametersSize(input);
     }
 
-    public String [] getParameters(){
-        return  command.split("\\|");
+    public String[] getParameters() {
+        return input.split("\\|");
     }
 
-    private int getParameterSize(String command) {
-        return command.split("\\|").length;
+    private int getParametersSize(String parameters) {
+        return parameters.split("\\|").length;
     }
 }
