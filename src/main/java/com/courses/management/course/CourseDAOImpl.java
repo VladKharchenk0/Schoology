@@ -1,8 +1,7 @@
 package com.courses.management.course;
 
-import com.courses.management.common.Command;
-import com.courses.management.common.DataAccessObject;
 import com.courses.management.common.DatabaseConnector;
+import com.courses.management.common.exceptions.SQLCourseException;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,7 +20,9 @@ public class CourseDAOImpl implements CourseDAO {
 
     private final static String GET = "SELECT * FROM course WHERE id = ?;";
 
-    private final static String GETBYTITLE = "SELECT * FROM course WHERE title = ?;";
+    private final static String FIND_COURSE_BY_TITLE = "SELECT c.id, c.title, c.status FROM course c " +
+
+            " WHERE c.title = ?;";
 
     private HikariDataSource dataSource = DatabaseConnector.getConnector();
 
@@ -77,23 +78,27 @@ public class CourseDAOImpl implements CourseDAO {
 
     @Override
     public Course get(String title) {
-        ResultSet resultSet = null;
-        Course course = new Course();
-
-        try (PreparedStatement statement = dataSource.getConnection().prepareStatement(GETBYTITLE)) {
+        LOGGER.debug(String.format("create: course.title=%s", title));
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_COURSE_BY_TITLE)) {
             statement.setString(1, title);
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                course.setTitle(title);
-                course.setId(resultSet.getInt("id"));
-                String s = resultSet.getString("status");
-                course.setCourseStatus(CourseStatus.valueOf(s));
-
-            }
+            ResultSet resultSet = statement.executeQuery();
+            return mapCourse(resultSet);
         } catch (SQLException e) {
+            LOGGER.debug(String.format("get: course.title=%s", title), e);
+            throw new SQLCourseException("Error occurred when saving a course");
         }
+    }
 
-        return course;
+    private Course mapCourse(ResultSet rs) throws SQLException {
+        String title = "";
+        if (rs.next()) {
+            Course course = new Course();
+            course.setId(rs.getInt("c.id"));
+            course.setTitle(rs.getString("c.title"));
+            course.setCourseStatus(CourseStatus.getCourseStatus(rs.getString("c.status")).get());
+            return course;
+        }
+        return null;
     }
 }
