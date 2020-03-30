@@ -11,8 +11,8 @@ public class ShowCourses implements Command {
     private View view;
     private CourseDAO courseDAO;
 
-    public ShowCourses(View view) {
-        this.courseDAO = new CourseDAOImpl();
+    public ShowCourses(View view, CourseDAO dao) {
+        this.courseDAO = dao;
         this.view = view;
     }
 

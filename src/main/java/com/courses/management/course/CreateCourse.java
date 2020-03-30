@@ -10,9 +10,9 @@ public class CreateCourse implements Command {
     private final View view;
     private CourseDAO courseDAO;
 
-    public CreateCourse(View view) {
+    public CreateCourse(View view, CourseDAO dao) {
         this.view = view;
-        courseDAO = new CourseDAOImpl();
+        this.courseDAO = dao;
     }
 
     @Override
@@ -36,9 +36,5 @@ public class CreateCourse implements Command {
         }
 
     }
-
-
-
-
 }
 

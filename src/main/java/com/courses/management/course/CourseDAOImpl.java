@@ -1,11 +1,10 @@
 package com.courses.management.course;
 
-import com.courses.management.common.DatabaseConnector;
 import com.courses.management.common.exceptions.SQLCourseException;
-import com.zaxxer.hikari.HikariDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +14,7 @@ import java.util.List;
 
 public class CourseDAOImpl implements CourseDAO {
     private static final Logger LOGGER = LogManager.getLogger(CourseDAOImpl.class);
+    private DataSource dataSource;
     private final static String INSERT = "INSERT INTO course(title, status) " +
             "VALUES(?, ?);";
     private final static String FIND_COURSE_BY_TITLE =
@@ -26,7 +26,10 @@ public class CourseDAOImpl implements CourseDAO {
             "WHERE id = ?;";
     private static final String FIND_ALL_COURSES = "SELECT id, title, status FROM course";
 
-    private HikariDataSource dataSource = DatabaseConnector.getConnector();
+
+    public CourseDAOImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public void create(Course course) {
@@ -121,6 +124,7 @@ public class CourseDAOImpl implements CourseDAO {
         }
         return null;
     }
+
     private Course mapCourseFromRS(ResultSet rs) throws SQLException {
         Course course = new Course();
         course.setId(rs.getInt("id"));

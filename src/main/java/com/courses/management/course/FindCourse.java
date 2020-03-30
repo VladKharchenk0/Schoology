@@ -10,8 +10,8 @@ public class FindCourse implements Command {
     private View view;
     private CourseDAO courseDAO;
 
-    public FindCourse(View view) {
-        this.courseDAO = new CourseDAOImpl();
+    public FindCourse(View view, CourseDAO dao) {
+        this.courseDAO = dao;
         this.view = view;
     }
 

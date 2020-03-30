@@ -11,8 +11,8 @@ public class UpdateCourseStatus implements Command {
     private View view;
     private CourseDAO courseDAO;
 
-    public UpdateCourseStatus(View view) {
-        this.courseDAO = new CourseDAOImpl();
+    public UpdateCourseStatus(View view, CourseDAO dao) {
+        this.courseDAO = dao;
         this.view = view;
     }
 

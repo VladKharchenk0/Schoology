@@ -7,6 +7,7 @@ import com.courses.management.course.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,18 +18,18 @@ public class MainController {
     private List<Command> commands;
 
 
-    public MainController(View view) {
+    public MainController(View view, DataSource dataSource) {
 
 
         this.view = view;
-        commands = Arrays.asList(new CreateCourse(view),
+        commands = Arrays.asList(new CreateCourse(view, new CourseDAOImpl(dataSource)),
                 new Help(view),
                 new Exit(view),
-                new FindCourse(view),
-                new UpdateCourseStatus(view),
-                new UpdateCourseTitle(view),
-                new DeleteCourse(view),
-                new ShowCourses(view)
+                new FindCourse(view, new CourseDAOImpl(dataSource)),
+                new UpdateCourseStatus(view, new CourseDAOImpl(dataSource)),
+                new UpdateCourseTitle(view, new CourseDAOImpl(dataSource)),
+                new DeleteCourse(view, new CourseDAOImpl(dataSource)),
+                new ShowCourses(view, new CourseDAOImpl(dataSource))
         );
     }
 
