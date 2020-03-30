@@ -47,6 +47,7 @@ public class MainController {
         for (Command command : commands) {
             try {
                 if (command.canProcess(entry)) {
+                    entry.validateParameters(command.command());
                     command.process(entry);
                     break;
                 }
