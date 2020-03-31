@@ -26,6 +26,13 @@ public class DatabaseConnector {
             throw new RuntimeException("");
         }
 
+        try {
+            Class.forName(properties.getProperty("jdbc.driver"));
+        } catch (ClassNotFoundException ex) {
+            LOGGER.error("Error loading postgres driver", ex);
+            throw new RuntimeException("Error loading postgres driver", ex);
+        }
+
         config.setJdbcUrl(properties.getProperty("jdbc.url"));
         config.setUsername(properties.getProperty("jdbc.username"));
         config.setPassword(properties.getProperty("jdbc.password"));
