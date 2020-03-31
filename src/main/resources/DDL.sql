@@ -74,3 +74,12 @@ ALTER TABLE solution
 ALTER TABLE home_work
     ALTER COLUMN title TYPE VARCHAR(50),
     ALTER COLUMN file_path TYPE VARCHAR(100);
+
+    ALTER TABLE course
+    ADD UNIQUE (title);
+
+ALTER TABLE users
+    ADD UNIQUE (email);
+
+ALTER TABLE users ALTER COLUMN first_name SET NOT NULL;
+ALTER TABLE users ALTER COLUMN last_name SET NOT NULL;
