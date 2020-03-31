@@ -96,7 +96,7 @@ public class IntegrationTest {
                 "\t|\t-> exit application\n" +
                 "---------------------------------------------------------\n" +
                 "---------------------------------------------------------\n" +
-                "Good bye!\n", getData());
+                "Good Bye!\n", getData());
     }
 
     @Test
@@ -116,7 +116,7 @@ public class IntegrationTest {
                 "Course:\n" +
                 "\t title = Title_Java\n" +
                 "\t status = NOT_STARTED\n" +
-                "Good bye!\n", getData());
+                "Good Bye!\n", getData());
     }
 
     public String getData() {
