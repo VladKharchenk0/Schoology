@@ -1,12 +1,9 @@
-package com.courses.management;
+package com.courses.management.course;
 
 
 import com.courses.management.common.Command;
 import com.courses.management.common.View;
 import com.courses.management.common.commands.util.InputString;
-import com.courses.management.course.Course;
-import com.courses.management.course.CourseDAO;
-import com.courses.management.course.CreateCourse;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
