@@ -10,18 +10,20 @@ import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class CreateUserTest {
     private Command command;
     private UserDAO dao;
+    private View view;
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setup(){
-        View view = mock(View.class);
+        this.view = mock(View.class);
         this.dao = mock(UserDAO.class);
         this.command = new CreateUser(view, dao);
     }
@@ -75,9 +77,42 @@ public class CreateUserTest {
         when(dao.get("vlad@email.com")).thenReturn(null);
         command.process(inputString);
         //then
-        verify(dao, times(1)).create(user);
-        verify(dao, times(1)).get("vlad@email.com");
+    }
 
+    @Test
+    public void testProcessEmptyFirstName() {
+        //given
+        InputString inputString = new InputString("create_user||Kharchenko|vlad@email.com");
+        User user = UsersTest.getTestUser();
+        user.setFirstName(null);
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("User first name can't be empty");
+        //when
+        command.process(inputString);
+    }
+
+    @Test
+    public void testProcessEmptyLastName() {
+        //given
+        InputString inputString = new InputString("create_user|Vlad||vlad@email.com");
+        User user = UsersTest.getTestUser();
+        user.setLastName(null);
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("User last name can't be empty");
+        //when
+        command.process(inputString);
+    }
+
+    @Test
+    public void testProcessEmptyEmail() {
+        //given
+        InputString inputString = new InputString("create_user|Vlad|Kharchenko| |");
+        User user = UsersTest.getTestUser();
+        user.setEmail(null);
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("Wrong email address  ");
+        //when
+        command.process(inputString);
     }
 
 
