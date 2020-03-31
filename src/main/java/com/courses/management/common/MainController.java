@@ -3,6 +3,7 @@ package com.courses.management.common;
 import com.courses.management.common.commands.Exit;
 import com.courses.management.common.commands.Help;
 import com.courses.management.common.commands.util.InputString;
+import com.courses.management.common.exceptions.ExitException;
 import com.courses.management.course.*;
 import com.courses.management.user.CreateUser;
 import com.courses.management.user.FindUser;
@@ -40,28 +41,32 @@ public class MainController {
 
     public void read() {
         view.write("Welcome");
-        while (true) {
-            view.write("Enter a command or use help to list all available commands:");
-            String read = view.read();
-            doCommand(read);
+        view.write("Enter a command or use help to list all available commands:");
+        try {
+            doCommand();
+        } catch (ExitException e) {
+            /*NOP*/
         }
     }
 
-    private void doCommand(String input) {
-        LOGGER.debug(String.format("doCommand: input=%s", input));
-        InputString entry = new InputString(input);
-        for (Command command : commands) {
-            try {
-                if (command.canProcess(entry)) {
-                    entry.validateParameters(command.command());
-                    command.process(entry);
+    private void doCommand() {
+        while (true) {
+            InputString entry = new InputString(view.read());
+            for (Command command : commands) {
+                try {
+                    if (command.canProcess(entry)) {
+                        entry.validateParameters(command.command());
+                        command.process(entry);
+                        break;
+                    }
+                } catch (Exception e) {
+                    if (e instanceof ExitException) {
+                        throw e;
+                    }
+                    LOGGER.warn(String.format("doCommand. WARN %s", e.getMessage()), e);
+                    printError(e);
                     break;
                 }
-            } catch (Exception e) {
-                LOGGER.warn("doCommand. Warning " + e.getMessage());
-                printError(e);
-                break;
-
             }
         }
     }
