@@ -1,4 +1,4 @@
-package com.courses.management.common;
+package com.courses.management.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -7,23 +7,30 @@ import org.apache.logging.log4j.Logger;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Properties;
 
 public class DatabaseConnector {
-    private  final HikariDataSource ds;
     private static final Logger LOGGER = LogManager.getLogger(DatabaseConnector.class);
+    private static HikariDataSource ds;
 
+    public synchronized static void init(String fileName) {
+        if (ds != null) {
+            return;
+        }
 
-    public DatabaseConnector() {
+        if (fileName.isEmpty()) {
+            throw new NullPointerException("init method. configFileName is null");
+        }
+
         HikariConfig config = new HikariConfig();
         final Properties properties = new Properties();
-        final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-
-        try (InputStream inputStream = classLoader.getResourceAsStream("application.properties")) {
-            properties.load(inputStream);
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        try (InputStream resourceAsStream = classLoader.getResourceAsStream(fileName)) {
+            properties.load(resourceAsStream);
         } catch (Exception e) {
             LOGGER.error("Error loading application.properties", e);
-            throw new RuntimeException("");
+            throw new RuntimeException("Error loading application.properties", e);
         }
 
         try {
@@ -40,7 +47,19 @@ public class DatabaseConnector {
         ds.setMaximumPoolSize(Integer.parseInt(properties.getProperty("jdbc.connection.pool.max.size")));
     }
 
-    public DataSource getDataSource() {
+    private DatabaseConnector() {
+
+    }
+
+    public static DataSource getDataSource() {
         return ds;
+    }
+
+    public synchronized static void destroy() {
+        if (Objects.isNull(ds)) {
+            return;
+        }
+        ds.close();
+        ds = null;
     }
 }
