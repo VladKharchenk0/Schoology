@@ -2,6 +2,7 @@ package com.courses.management.user;
 
 import com.courses.management.common.Command;
 import com.courses.management.common.View;
+import com.courses.management.common.commands.util.Commands;
 import com.courses.management.common.commands.util.InputString;
 
 import java.util.Objects;
@@ -10,15 +11,14 @@ public class CreateUser implements Command {
     private View view;
     private UserDAO dao;
 
-
     public CreateUser(View view, UserDAO dao) {
-        this.dao = dao;
         this.view = view;
+        this.dao = dao;
     }
 
     @Override
     public String command() {
-        return "create_user|firstName|lastName|email";
+        return Commands.CREATE_USER;
     }
 
     @Override
@@ -40,7 +40,4 @@ public class CreateUser implements Command {
             throw new IllegalArgumentException(String.format("User with email %s already exists", user.getEmail()));
         }
     }
-
-
-
 }
