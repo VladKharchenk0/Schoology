@@ -26,15 +26,20 @@ public class CreateCourse implements Command {
         validateTitle(course.getTitle());
 
         courseDAO.create(course);
-        view.write(String.format("Course created with title -> %s", course.getTitle()));
+        view.write(String.format("Course created with title - %s", course.getTitle()));
     }
 
     private void validateTitle(String title) {
-        Course course = courseDAO.get(title);
-        if( course != null){
-            throw new IllegalArgumentException("Course with this title already exists");
+        if (title.trim().isEmpty()) {
+            throw new IllegalArgumentException("Course title can't be empty");
         }
 
+        Course course = courseDAO.get(title);
+        if (course != null) {
+            throw new IllegalArgumentException(String.format("Course with title %s already exists", title));
+        }
     }
+
 }
+
 

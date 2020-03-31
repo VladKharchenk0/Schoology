@@ -11,8 +11,7 @@ import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 public class CreateCourseTest {
@@ -50,17 +49,14 @@ public class CreateCourseTest {
         assertFalse(result);
     }
 
-
     @Test
     public void testProcessWithAlreadyExistTitle() {
         //given
-        Course course = new Course();
-        course.setTitle("JAVA");
+        Course course = CoursesTest.getTestCourse();
         exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Course with this title already exists");
+        exception.expectMessage("Course with title JAVA already exists");
         //when
         InputString inputString = new InputString("create_course|JAVA");
-
         when(dao.get("JAVA")).thenReturn(course);
         command.process(inputString);
     }
@@ -68,13 +64,15 @@ public class CreateCourseTest {
     @Test
     public void testProcessWithCorrectParameters() {
         //given
-        InputString inputString = new InputString("create_course|JAVA");
+        Course course = CoursesTest.getTestCourse();
+        InputString inputString = new InputString(String.format("create_course|%s", course.getTitle()));
         //when
         when(dao.get("JAVA")).thenReturn(null);
         command.process(inputString);
-
+        //then
+        verify(view).write(String.format("Course created with title - %s", course.getTitle()));
+        verify(dao, times(1)).create(course);
     }
-
 
     @Test
     public void testCanNotProcessWithEmptyTitle() {
