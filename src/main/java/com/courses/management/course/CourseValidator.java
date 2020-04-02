@@ -19,7 +19,7 @@ public class CourseValidator {
             errors.add("Course Title is empty");
         }
         final Optional<CourseStatus> courseStatus = CourseStatus.getCourseStatus(course_status);
-        if (Objects.nonNull(courseStatus) && courseStatus ==null) {
+        if (Objects.nonNull(courseStatus) && courseStatus==null) {
             errors.add("Course status is incorrect");
         }
         errorMessage.setErrors(errors);
