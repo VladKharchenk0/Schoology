@@ -5,38 +5,41 @@ import com.courses.management.common.commands.Help;
 import com.courses.management.common.commands.util.InputString;
 import com.courses.management.common.exceptions.ExitException;
 import com.courses.management.course.*;
-import com.courses.management.user.CreateUser;
-import com.courses.management.user.FindUser;
-import com.courses.management.user.UserDAOImpl;
+import com.courses.management.user.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.SessionFactory;
 
 import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.List;
 
 public class MainController {
-
-    private static final Logger LOGGER = LogManager.getLogger(MainController.class);
+    private static final Logger LOG = LogManager.getLogger(MainController.class);
     private View view;
     private List<Command> commands;
 
-
-    public MainController(View view, DataSource dataSource) {
-
-        final CourseDAOImpl courseDAO = new CourseDAOImpl(dataSource);
-        final UserDAOImpl userDAO = new UserDAOImpl(dataSource);
+    public MainController(View view, DataSource dataSource, SessionFactory sessionFactory) {
         this.view = view;
-        commands = Arrays.asList(new CreateCourse(view, courseDAO),
+        final CourseDAOImpl courseDAO = new CourseDAOImpl(dataSource, sessionFactory);
+        final UserDAOImpl userDAO = new UserDAOImpl(dataSource);
+        this.commands = Arrays.asList(
+                new CreateCourse(view, courseDAO),
                 new Help(view),
-                new Exit(view),
                 new FindCourse(view, courseDAO),
                 new UpdateCourseStatus(view, courseDAO),
                 new UpdateCourseTitle(view, courseDAO),
                 new ShowCourses(view, courseDAO),
                 new DeleteCourse(view, courseDAO),
                 new CreateUser(view, userDAO),
-                new FindUser(view, userDAO));
+                new FindUser(view, userDAO),
+                new Exit(view),
+                new DeleteUserCourse(view, userDAO),
+                new FindAllUsersByCourse(view, userDAO),
+                new FindUsersByStatus(view, userDAO),
+                new UpdateUserCourse(view, userDAO, courseDAO),
+                new UpdateUserEmail(view, userDAO)
+        );
     }
 
     public void read() {
@@ -63,7 +66,7 @@ public class MainController {
                     if (e instanceof ExitException) {
                         throw e;
                     }
-                    LOGGER.warn(String.format("doCommand. WARN %s", e.getMessage()), e);
+                    LOG.warn(String.format("doCommand. WARN %s", e.getMessage()), e);
                     printError(e);
                     break;
                 }
@@ -74,7 +77,6 @@ public class MainController {
     private void printError(Exception e) {
         String message = e.getMessage();
         view.write("Error because of " + message);
-        view.write("Please try again");
+        view.write("Please try again.");
     }
-
 }
