@@ -7,9 +7,7 @@ import com.courses.management.user.UserDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
 
 public class Courses {
     private static final Logger LOG = LogManager.getLogger(Courses.class);
@@ -43,6 +41,8 @@ public class Courses {
     public Course getById(Integer id) {
         final Course course = courseDAO.get(id);
         final List<User> users = userDAO.getUsersByCourse(course.getTitle());
+        //TODO
+//        course.setUsers(users);
         return course;
     }
 
@@ -50,13 +50,7 @@ public class Courses {
         return courseDAO.get(title);
     }
 
-    public Course createCourse(HttpServletRequest req) {
-        final String courseTitle = (String) req.getParameter("title");
-        final String course_status = (String) req.getParameter("course_status");
-        final Optional<CourseStatus> courseStatus = CourseStatus.getCourseStatus(course_status);
-        Course course = new Course();
-        course.setTitle(courseTitle);
-        course.setCourseStatus(courseStatus.get());
+    public Course createCourse(Course course) {
         courseDAO.create(course);
         return course;
     }

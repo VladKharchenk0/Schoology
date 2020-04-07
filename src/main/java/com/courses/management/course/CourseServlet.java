@@ -1,6 +1,5 @@
 package com.courses.management.course;
 
-
 import com.courses.management.common.Validator;
 import com.courses.management.common.exceptions.ErrorMessage;
 import com.courses.management.config.DatabaseConnector;
@@ -58,7 +57,7 @@ public class CourseServlet extends HttpServlet {
                 req.setAttribute("courseStatuses", CourseStatus.values());
                 req.getRequestDispatcher("/view/create_course.jsp").forward(req, resp);
             }
-
+            service.createCourse(course);
             req.setAttribute("course_title", course.getTitle());
             req.getRequestDispatcher("/view/course_created.jsp").forward(req, resp);
         }
